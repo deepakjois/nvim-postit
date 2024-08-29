@@ -26,7 +26,14 @@ end
 local function create_or_open_note(name)
   local file_path = M.config.notes_dir .. "/" .. name .. ".md"
   cmd("edit " .. file_path)
-  cmd("setlocal autowriteall")
+  
+  -- Create an autocommand for this buffer
+  vim.api.nvim_create_autocmd("InsertLeave", {
+    buffer = 0,  -- 0 means current buffer
+    callback = function()
+      vim.cmd("write")
+    end,
+  })
 end
 
 -- Main function to display and manage notes using FZF
