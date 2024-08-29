@@ -31,7 +31,9 @@ local function create_or_open_note(name)
   vim.api.nvim_create_autocmd("InsertLeave", {
     buffer = 0,  -- 0 means current buffer
     callback = function()
-      vim.cmd("write")
+      if vim.bo.modified then
+        vim.cmd("write")
+      end
     end,
   })
 end
